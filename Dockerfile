@@ -27,7 +27,6 @@ RUN useradd -d ${PIO_HOME} -ms /bin/bash pio \
 &&  apt-get install -qq -y -f \
 &&  rm -rf /var/cache/apt/archives/* /var/cache/oracle-jdk8-installer/* /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-USER pio
 WORKDIR ${PIO_HOME}
 
 # Apache PredictionIO, Spark and JDBC PostgreSQL driver
@@ -38,6 +37,7 @@ RUN curl -sSL https://www.apache.org/dist/predictionio/${PIO_VERSION}/apache-pre
 
 # pio-env.sh
 COPY conf/ ${PIO_HOME}/conf/
-RUN chown -R pio:pio ${PIO_HOME}/conf
+RUN chown -R pio:pio ${PIO_HOME}
 
+USER pio
 CMD ["pio"]
