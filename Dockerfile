@@ -17,7 +17,7 @@ SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 # Add user and install Oracle JDK, Scala
 RUN useradd -d ${PIO_HOME} -ms /bin/bash pio \
 &&  apt-get update -qq -y \
-&&  apt-get install -qq -y --no-install-recommends software-properties-common \
+&&  apt-get install -qq -y --no-install-recommends software-properties-common vim-nox \
 &&  add-apt-repository -y ppa:webupd8team/java \
 &&  echo oracle-java8-installer shared/accepted-oracle-license-v1-1 select true | debconf-set-selections \
 &&  apt-get update -qq -y \
@@ -27,13 +27,17 @@ RUN useradd -d ${PIO_HOME} -ms /bin/bash pio \
 &&  apt-get install -qq -y -f \
 &&  rm -rf /var/cache/apt/archives/* /var/cache/oracle-jdk8-installer/* /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-COPY conf/ ${PIO_HOME}/conf/
-RUN chown -R pio:pio ${PIO_HOME}/conf
-
 USER pio
 WORKDIR ${PIO_HOME}
 
+# Apache PredictionIO, Spark and JDBC PostgreSQL driver
 RUN curl -sSL https://www.apache.org/dist/predictionio/${PIO_VERSION}/apache-predictionio-${PIO_VERSION}-bin.tar.gz | tar -xzpf - --strip-components=1 -C ${PIO_HOME} \
 &&  mkdir ${PIO_HOME}/vendors \
 &&  curl -sSL https://archive.apache.org/dist/spark/spark-${SPARK_VERSION}/spark-${SPARK_VERSION}-bin-hadoop${HADOOP_VERSION}.tgz | tar -xzpf - -C ${PIO_HOME}/vendors \
 &&  curl -sSL https://jdbc.postgresql.org/download/postgresql-${JDBC_PG_VERSION}.jar -o ${PIO_HOME}/lib/spark/postgresql-${JDBC_PG_VERSION}.jar
+
+# pio-env.sh
+COPY conf/ ${PIO_HOME}/conf/
+RUN chown -R pio:pio ${PIO_HOME}/conf
+
+CMD ["pio"]
