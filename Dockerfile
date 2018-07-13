@@ -1,4 +1,4 @@
-FROM buildpack-deps:xenial
+FROM buildpack-deps:bionic
 
 ENV DEBIAN_FRONTEND noninteractive
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
@@ -24,7 +24,7 @@ RUN useradd -d /home/pio -ms /bin/bash pio \
 &&  curl -sSL https://downloads.lightbend.com/scala/${SCALA_VERSION}/scala-${SCALA_VERSION}.deb -o /tmp/scala-${SCALA_VERSION}.deb \
 &&  dpkg -i /tmp/scala-${SCALA_VERSION}.deb \
 &&  apt-get install -qq -y -f \
-&&  rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+&&  rm -rf /var/cache/apt/archives/* /var/cache/oracle-jdk8-installer/* /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 USER pio
 WORKDIR /home/pio
