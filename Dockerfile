@@ -1,7 +1,6 @@
 FROM buildpack-deps:bionic
 
 ENV DEBIAN_FRONTEND noninteractive
-SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
 ENV PIO_VERSION 0.12.1
 ENV SPARK_VERSION 2.1.1
@@ -13,8 +12,10 @@ ENV PIO_HOME /home/pio
 ENV PATH=${PIO_HOME}/bin:$PATH
 ENV JAVA_HOME /usr/lib/jvm/java-8-oracle
 
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+
 # Add user and install Oracle JDK, Scala
-RUN useradd -d /home/pio -ms /bin/bash pio \
+RUN useradd -d ${PIO_HOME} -ms /bin/bash pio \
 &&  apt-get update -qq -y \
 &&  apt-get install -qq -y --no-install-recommends software-properties-common \
 &&  add-apt-repository -y ppa:webupd8team/java \
@@ -26,8 +27,11 @@ RUN useradd -d /home/pio -ms /bin/bash pio \
 &&  apt-get install -qq -y -f \
 &&  rm -rf /var/cache/apt/archives/* /var/cache/oracle-jdk8-installer/* /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
+COPY conf/ ${PIO_HOME}/conf/
+RUN chown -R pio:pio ${PIO_HOME}/conf
+
 USER pio
-WORKDIR /home/pio
+WORKDIR ${PIO_HOME}
 
 RUN curl -sSL https://www.apache.org/dist/predictionio/${PIO_VERSION}/apache-predictionio-${PIO_VERSION}-bin.tar.gz | tar -xzpf - --strip-components=1 -C ${PIO_HOME} \
 &&  mkdir ${PIO_HOME}/vendors \
