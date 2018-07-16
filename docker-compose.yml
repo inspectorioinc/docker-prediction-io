@@ -1,0 +1,29 @@
+version: "3.3"
+
+services:
+  app:
+    image: inspectorio/prediction-io
+    volumes:
+    - ./:/home/pio/src
+    - ~/.ssh:/home/pio/.ssh
+    command:
+    - /bin/bash
+    - -c
+    - 'trap : TERM INT; sleep infinity & wait'
+    environment:
+      PIO_DB_HOST: postgres
+      PIO_DB: pio
+      PIO_DB_USER: pio
+      PIO_DB_PASSWORD: pio
+      ES_HOST: elasticsearch
+      ES_PORT: 9200
+
+  postgres:
+    image: postgres:9.6
+    environment:
+      POSTGRES_USER: pio
+      POSTGRES_PASSWORD: pio
+      POSTGRES_DB: pio
+
+  elasticsearch:
+    image: inspectorio/elasticsearch-without-xpack
