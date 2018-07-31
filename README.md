@@ -5,6 +5,7 @@
 - Apache PredictionIO 0.12.1
 - Apache Spark 2.1.1
 - PostgreSQL JDBC 42.2.0
+- Universal Recommender v0.7.3
 
 ### Environments
 
