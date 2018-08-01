@@ -4,12 +4,15 @@ services:
   app:
     image: inspectorio/prediction-io
     volumes:
-    - ./:/home/pio/src
+    - ./:/home/pio/app/src
     - ~/.ssh:/home/pio/.ssh
     command:
     - /bin/bash
     - -c
     - 'trap : TERM INT; sleep infinity & wait'
+    ports:
+    - 9000:9000
+    - 7070:7070
     environment:
       PIO_DB_HOST: postgres
       PIO_DB: pio
