@@ -36,7 +36,7 @@ RUN useradd -d ${PIO_HOME} -ms /bin/bash pio \
 # Apache PredictionIO, Spark and JDBC PostgreSQL driver
 RUN curl -sSL https://www.apache.org/dist/predictionio/${PIO_VERSION}/apache-predictionio-${PIO_VERSION}-bin.tar.gz | tar -xzpf - --strip-components=1 -C ${PIO_HOME} \
 &&  curl -sSL https://archive.apache.org/dist/spark/spark-${SPARK_VERSION}/spark-${SPARK_VERSION}-bin-hadoop${HADOOP_VERSION}.tgz | tar -xzpf - -C ${PIO_HOME}/vendors \
-&&  curl -sSL https://jdbc.postgresql.org/download/postgresql-${JDBC_PG_VERSION}.jar -o ${PIO_HOME}/lib/spark/postgresql-${JDBC_PG_VERSION}.jar
+&&  curl -sSL https://jdbc.postgresql.org/download/postgresql-${JDBC_PG_VERSION}.jar -o ${PIO_HOME}/lib/postgresql-${JDBC_PG_VERSION}.jar
 
 WORKDIR ${UR_HOME}
 
