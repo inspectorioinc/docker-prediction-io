@@ -27,7 +27,12 @@ RUN useradd -d ${PIO_HOME} -ms /bin/bash pio \
 &&  add-apt-repository -y ppa:webupd8team/java \
 &&  echo oracle-java8-installer shared/accepted-oracle-license-v1-1 select true | debconf-set-selections \
 &&  apt-get update -qq -y \
-&&  apt-get install -qq -y oracle-java8-installer oracle-java8-set-default oracle-java8-unlimited-jce-policy \
+&&  apt-get install -qq -y oracle-java8-installer oracle-java8-set-default oracle-java8-unlimited-jce-policy || true \
+&&  cd /var/lib/dpkg/info && sed -i 's|JAVA_VERSION=8u181|JAVA_VERSION=8u191|' oracle-java8-installer.* \
+&&  sed -i 's|PARTNER_URL=http://download.oracle.com/otn-pub/java/jdk/8u181-b13/96a7b8442fe848ef90c96a2fad6ed6d1/|PARTNER_URL=http://download.oracle.com/otn-pub/java/jdk/8u191-b12/2787e4a523244c269598db4e85c51e0c/|' oracle-java8-installer.* \
+&&  sed -i 's|SHA256SUM_TGZ=.*|SHA256SUM_TGZ="53c29507e2405a7ffdbba627e6d64856089b094867479edc5ede4105c1da0d65"|' oracle-java8-installer.* \
+&&  sed -i 's|J_DIR=jdk1.8.0_181|J_DIR=jdk1.8.0_191|' oracle-java8-installer.* \
+&&  apt-get install -qq -y oracle-java8-installer oracle-java8-set-default oracle-java8-unlimited-jce-policy || true \
 &&  curl -sSL https://downloads.lightbend.com/scala/${SCALA_VERSION}/scala-${SCALA_VERSION}.deb -o /tmp/scala-${SCALA_VERSION}.deb \
 &&  dpkg -i /tmp/scala-${SCALA_VERSION}.deb \
 &&  apt-get install -qq -y -f \
