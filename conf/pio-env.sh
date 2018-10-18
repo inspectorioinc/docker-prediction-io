@@ -1,9 +1,6 @@
 #!/usr/bin/env bash
 # PredictionIO Main Configuration
 
-# Environment suffix for ES and PostgreSQL
-export ENV_SUFFIX=''
-
 # SPARK_HOME: Apache Spark is a hard dependency and must be configured.
 export SPARK_HOME=${PIO_HOME}/vendors/spark-${SPARK_VERSION}-bin-hadoop${HADOOP_VERSION}
 export POSTGRES_JDBC_DRIVER=${PIO_HOME}/lib/postgresql-${JDBC_PG_VERSION}.jar
